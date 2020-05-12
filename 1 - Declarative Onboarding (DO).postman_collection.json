@@ -1,0 +1,176 @@
+{
+	"info": {
+		"_postman_id": "5aad8e05-cbe4-4843-8534-fa5415d37740",
+		"name": "1 - Declarative Onboarding (DO)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Query DO Service",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{BIGIQ_MGMT_IP}}/mgmt/shared/declarative-onboarding/info",
+					"protocol": "https",
+					"host": [
+						"{{BIGIQ_MGMT_IP}}"
+					],
+					"path": [
+						"mgmt",
+						"shared",
+						"declarative-onboarding",
+						"info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Declarative Onboarding",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ff24df84-576d-4044-af13-222a3160abb8",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"$schema\": \"https://raw.githubusercontent.com/F5Networks/f5-declarative-onboarding/master/src/schema/1.5.0/remote.schema.json\",\r\n\t\"class\": \"DO\",\r\n\t\"declaration\": {\r\n\t\t\"schemaVersion\": \"1.5.0\",\r\n\t\t\"class\": \"Device\",\r\n\t\t\"async\": true,\r\n\t\t\"Common\": {\r\n\t\t\t\"class\": \"Tenant\",\r\n\t\t\t\"myProvision\": {\r\n\t\t\t\t\"class\": \"Provision\",\r\n\t\t\t\t\"ltm\": \"nominal\",\r\n\t\t\t\t\"afm\": \"nominal\",\r\n\t\t\t\t\"asm\": \"nominal\",\r\n\t\t\t\t\"ilx\": \"nominal\"\r\n\t\t\t},\r\n\t\t\t\"myNtp\": {\r\n\t\t\t\t\"class\": \"NTP\",\r\n\t\t\t\t\"servers\": [\r\n\t\t\t\t\t\"0.pool.ntp.org\",\r\n\t\t\t\t\t\"1.pool.ntp.org\",\r\n\t\t\t\t\t\"2.pool.ntp.org\"\r\n\t\t\t\t],\r\n\t\t\t\t\"timezone\": \"EST\"\r\n\t\t\t},\r\n\t\t\t\"admin\": {\r\n\t\t\t\t\"class\": \"User\",\r\n\t\t\t\t\"userType\": \"regular\",\r\n\t\t\t\t\"password\": \"Agility2020Orlando!\",\r\n\t\t\t\t\"shell\": \"tmsh\",\r\n\t\t\t\t\"keys\": [\r\n\t\t\t\t\t\"ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAyeGJaeiX8W1oT+hQNtnLTFGV8yq9KOfed1Y/4FKkH03nclGVdkyqZdykfRQYB99O24JHVlNIE8kwhO8+ZXM4AQCl/Pgrqg1tlvtsuimeCMr73lHIkAaU8wZfYW5lOlwFKuIzxJmhjzxrMr8EFuiByksgBc/j1n+u9mERSvOs/v4JPBN0S9nmcBom+HTcZrw8MQXf+au+Yr3wMTkJl2O5I29P3OzmPcyTSPG1yqoJAB78P8pOK8+Chs0iZvc1NLgtURVLbAidMRkeF38tx4v3kAFs9ozTg1jzpC2VnhNLHRZtv84BDO91xgRMgHOKIcpNL87xihK0HzS5SBknBWT5UQ==\"\r\n\t\t\t\t]\r\n\t\t\t},\r\n\t\t\t\"internal\": {\r\n\t\t\t\t\"class\": \"VLAN\",\r\n\t\t\t\t\"tag\": 4093,\r\n\t\t\t\t\"mtu\": 1500,\r\n\t\t\t\t\"interfaces\": [{\r\n\t\t\t\t\t\"name\": \"1.2\",\r\n\t\t\t\t\t\"tagged\": false\r\n\t\t\t\t}]\r\n\t\t\t},\r\n\t\t\t\"internal-self\": {\r\n\t\t\t\t\"class\": \"SelfIp\",\r\n\t\t\t\t\"address\": \"10.1.20.10/24\",\r\n\t\t\t\t\"vlan\": \"internal\",\r\n\t\t\t\t\"allowService\": \"none\",\r\n\t\t\t\t\"trafficGroup\": \"traffic-group-local-only\"\r\n\t\t\t},\r\n\t\t\t\"external\": {\r\n\t\t\t\t\"class\": \"VLAN\",\r\n\t\t\t\t\"tag\": 4092,\r\n\t\t\t\t\"mtu\": 1500,\r\n\t\t\t\t\"interfaces\": [{\r\n\t\t\t\t\t\"name\": \"1.1\",\r\n\t\t\t\t\t\"tagged\": false\r\n\t\t\t\t}]\r\n\t\t\t},\r\n\t\t\t\"external-self\": {\r\n\t\t\t\t\"class\": \"SelfIp\",\r\n\t\t\t\t\"address\": \"10.1.10.10/24\",\r\n\t\t\t\t\"vlan\": \"external\",\r\n\t\t\t\t\"allowService\": \"none\",\r\n\t\t\t\t\"trafficGroup\": \"traffic-group-local-only\"\r\n\t\t\t},\r\n\t\t\t\"default\": {\r\n\t\t\t\t\"class\": \"Route\",\r\n\t\t\t\t\"gw\": \"10.1.20.1\",\r\n\t\t\t\t\"network\": \"default\",\r\n\t\t\t\t\"mtu\": 1500\r\n\t\t\t},\r\n\t\t\t\"dbvars\": {\r\n\t\t\t\t\"class\": \"DbVariables\",\r\n\t\t\t\t\"ui.advisory.enabled\": true,\r\n\t\t\t\t\"ui.advisory.color\": \"blue\",\r\n\t\t\t\t\"ui.advisory.text\": \"Agility 2020 Lab\"\r\n\t\t\t}\r\n\t\t}\r\n\t},\r\n\t\"targetHost\": \"{{BIGIP_MGMT_IP}}\",\r\n\t\"targetUsername\": \"{{BIGIP_ADMIN_USERNAME}}\",\r\n\t\"targetPassphrase\": \"{{BIGIP_ADMIN_PASSWORD}}\",\r\n\t\"bigIqSettings\": {\r\n\t\t\"failImportOnConflict\": false,\r\n\t\t\"conflictPolicy\": \"USE_BIGIP\",\r\n\t\t\"deviceConflictPolicy\": \"USE_BIGIP\",\r\n\t\t\"versionedConflictPolicy\": \"KEEP_VERSION\",\r\n\t\t\"statsConfig\": {\r\n\t\t\t\"enabled\": true,\r\n\t\t\t\"zone\": \"default\"\r\n\t\t},\r\n\t\t\"snapshotWorkingConfig\": false\r\n\t}\r\n}"
+				},
+				"url": {
+					"raw": "https://{{BIGIQ_MGMT_IP}}/mgmt/shared/declarative-onboarding/",
+					"protocol": "https",
+					"host": [
+						"{{BIGIQ_MGMT_IP}}"
+					],
+					"path": [
+						"mgmt",
+						"shared",
+						"declarative-onboarding",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check DO Task Status",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{BIGIQ_MGMT_IP}}/mgmt/shared/declarative-onboarding",
+					"protocol": "https",
+					"host": [
+						"{{BIGIQ_MGMT_IP}}"
+					],
+					"path": [
+						"mgmt",
+						"shared",
+						"declarative-onboarding"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "{{X-F5-Auth-Token}}",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "X-F5-Auth-Token",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "c41e9a9b-9ecc-4d51-bb64-8a516d5aeb29",
+				"type": "text/javascript",
+				"exec": [
+					"var BIGIQ_MGMT_IP = pm.environment.get(\"BIGIQ_MGMT_IP\");",
+					"var BIGIQ_ADMIN_USERNAME = pm.environment.get(\"BIGIQ_ADMIN_USERNAME\");",
+					"var BIGIQ_ADMIN_PASSWORD = pm.environment.get(\"BIGIQ_ADMIN_PASSWORD\");",
+					"var credentials = {};",
+					"credentials.username = BIGIQ_ADMIN_USERNAME;",
+					"credentials.password = BIGIQ_ADMIN_PASSWORD;",
+					"credentials.provider = 'tmos';",
+					"const authTokenRequest = {",
+					"  url: 'https://'.concat(BIGIQ_MGMT_IP,'/mgmt/shared/authn/login'),",
+					"  method: 'POST',",
+					"  header: 'Content-Type:application/json',",
+					"  body: {",
+					"    mode: 'application/json',",
+					"    raw: JSON.stringify(credentials)",
+					"  }",
+					"};",
+					"",
+					"var getToken = true;",
+					"",
+					"if (!pm.environment.get('F5-Auth-Token-Expiry') || ",
+					"    !pm.environment.get('X-F5-Auth-Token')) {",
+					"    console.log('Token or expiry date are missing');",
+					"} else if (pm.environment.get('F5-Auth-Token-Expiry') <= (new Date()).getTime()) {",
+					"    console.log('Token is expired');",
+					"} else {",
+					"    getToken = false;",
+					"    console.log('Token and expiry date are all good');",
+					"}",
+					"",
+					"if (getToken === true) {",
+					"    pm.sendRequest(authTokenRequest, function (err, res) {",
+					"    console.log(err ? err : res.json());",
+					"        if (err === null) {",
+					"            var responseJson = res.json();",
+					"            pm.environment.set('X-F5-Auth-Token', responseJson.token.token);",
+					"            var expiryDate = new Date();",
+					"            expiryDate.setSeconds(expiryDate.getSeconds() + responseJson.token.timeout);",
+					"            pm.environment.set('F5-Auth-Token-Expiry', expiryDate.getTime());",
+					"        }",
+					"    });",
+					"}"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "0f0caecf-1ead-41d7-b28f-84c8f46a2f87",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
