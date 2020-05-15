@@ -1,0 +1,242 @@
+{
+    "$schema": "https://raw.githubusercontent.com/F5Networks/f5-appsvcs-extension/master/schema/3.18.0/as3-schema.json",
+	"class": "AS3",
+	"action": "deploy",
+	"persist": true,
+	"declaration": {
+		"class": "ADC",
+		"schemaVersion": "3.0.0",
+		"id": "agility2020-3929jfas9jdf29f",
+		"label": "Web App",
+		"remark": "An HTTPS web application with an AFM policy",
+		"target": {
+			"address": "10.1.1.4"
+		},
+		"controls": {
+			"trace": true
+		},
+		"Juice_Shop": {
+            "class": "Tenant",
+			"label": "Juice Shop App",
+			"Juice_Shop_App": {
+				"class": "Application",
+				"template": "https",
+				"serviceMain": {
+                	"class": "Service_HTTPS",
+                	"virtualAddresses": [
+                		"10.1.10.11"
+                	],
+					"policyFirewallEnforced": {
+						"use": "Juice_Shop_App_Firewall_Policy"
+                    },
+                    "policyWAF": {
+						"use":"Juice_Shop_WAF_Policy"
+					},
+					"pool": "Juice_Shop_App_Pool",
+					"snat": "auto",
+					"securityLogProfiles": [ {
+						"use":"fwSecurityLogProfile"
+						}, {
+						"use":"secLogRemote"
+						} ],	
+					"serverTLS": "Juice_Shop_App_TLS"
+                },
+                "Juice_Shop_App_TLS": {
+					"class": "TLS_Server",
+					"certificates": [{
+						"certificate": "Juice_Shop_App_Cert"
+					}]
+				},
+				"Juice_Shop_App_Cert": {
+					"class": "Certificate",
+					"remark": "in practice we recommend using a passphrase",
+					"certificate": "-----BEGIN CERTIFICATE-----\nMIICnDCCAgWgAwIBAgIJAJ5n2b0OCEjwMA0GCSqGSIb3DQEBCwUAMGcxCzAJBgNVBAYTAlVTMRMwEQYDVQQIDApXYXNoaW5ndG9uMRAwDgYDVQQHDAdTZWF0dGxlMRQwEgYDVQQKDAtmNV9OZXR3b3JrczEbMBkGA1UEAwwSc2FtcGxlLmV4YW1wbGUubmV0MB4XDTE3MTEyNjE5NTAyNFoXDTE4MDIyNTE5NTAyNFowZzELMAkGA1UEBhMCVVMxEzARBgNVBAgMCldhc2hpbmd0b24xEDAOBgNVBAcMB1NlYXR0bGUxFDASBgNVBAoMC2Y1X05ldHdvcmtzMRswGQYDVQQDDBJzYW1wbGUuZXhhbXBsZS5uZXQwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBALEsuXmSXVQpYjrZPW+WiTBjn491mwZYT7Q92V1HlSBtM6WdWlK1aZN5sovfKtOX7Yrm8xa+e4o/zJ2QYLyyv5O+t2EGN/4qUEjEAPY9mwJdfzRQy6Hyzm84J0QkTuUJ/EjNuPji3D0QJRALUTzu1UqqDCEtiN9OGyXEkh7uvb7BAgMBAAGjUDBOMB0GA1UdDgQWBBSVHPNrGWrjWyZvckQxFYWO59FRFjAfBgNVHSMEGDAWgBSVHPNrGWrjWyZvckQxFYWO59FRFjAMBgNVHRMEBTADAQH/MA0GCSqGSIb3DQEBCwUAA4GBAJeJ9SEckEwPhkXOm+IuqfbUS/RcziifBCTmVyE+Fa/j9pKSYTgiEBNdbJeBEa+gPMlQtbV7Y2dy8TKx/8axVBHiXC5geDML7caxOrAyHYBpnx690xJTh5OIORBBM/a/NvaR+P3CoVebr/NPRh9oRNxnntnqvqD7SW0U3ZPe3tJc\n-----END CERTIFICATE-----",
+					"privateKey": "-----BEGIN RSA PRIVATE KEY-----\nProc-Type: 4,ENCRYPTED\nDEK-Info: AES-256-CBC,D8FFCE6B255601587CB54EC29B737D31\n\nkv4Fc3Jn0Ujkj0yRjt+gQQfBLSNF2aRLUENXnlr7Xpzqu0Ahr3jS1bAAnd8IWnsR\nyILqVmKsYF2DoHh0tWiEAQ7/y/fe5DTFhK7N4Wml6kp2yVMkP6KC4ssyYPw27kjK\nDBwBZ5O8Ioej08A5sgsLCmglbmtSPHJUn14pQnMTmLOpEtOsu6S+2ibPgSNpdg0b\nCAJNG/KHe+Vkx59qNDyDeKb7FZOlsX30+y67zUq9GQqJEDuysPJ2BUNP0IJXAjst\nFIt1qNoZew+5KDYs7u/lPxcMGTirUhgI84Jy4WcDvSOsP/tKlxj04TbIE3epmSKy\n+TihHkwY7ngIGtcm3Sfqk5jz2RXoj1/Ac3SW8kVTYaOUogBhn7zAq4Wju6Et4hQG\nRGapsJp1aCeZ/a4RCDTxspcKoMaRa97/URQb0hBRGx3DGUhzpmX9zl7JI2Xa5D3R\nmdBXtjLKYJTdIMdd27prBEKhMUpae2rz5Mw4J907wZeBq/wu+zp8LAnecfTe2nGY\nE32x1U7gSEdYOGqnwxsOexb1jKgCa67Nw9TmcMPV8zmH7R9qdvgxAbAtwBl1F9OS\nfcGaC7epf1AjJLtaX7krWmzgASHl28Ynh9lmGMdv+5QYMZvKG0LOg/n3m8uJ6sKy\nIzzvaJswwn0j5P5+czyoV5CvvdCfKnNb+3jUEN8I0PPwjBGKr4B1ojwhogTM248V\nHR69D6TxFVMfGpyJhCPkbGEGbpEpcffpgKuC/mEtMqyDQXJNaV5HO6HgAJ9F1P6v\n5ehHHTMRvzCCFiwndHdlMXUjqSNjww6me6dr6LiAPbejdzhL2vWx1YqebOcwQx3G\n-----END RSA PRIVATE KEY-----",
+					"passphrase": {
+						"ciphertext": "ZjVmNQ==",
+						"protected": "eyJhbGciOiJkaXIiLCJlbmMiOiJub25lIn0"
+					}
+                }, 
+                "Juice_Shop_WAF_Policy": {
+                    "class": "WAF_Policy",
+                    "url": "https://raw.githubusercontent.com/f5devcentral/f5-asm-policy-templates/master/owasp_ready_template/owasp-auto-tune-v1.1.xml",
+                    "ignoreChanges": true
+                  },               
+				"Juice_Shop_App_Pool": {
+					"class": "Pool",
+					"monitors": [
+						"http"
+					],
+					"members": [{
+						"servicePort": 3000,
+						"serverAddresses": [
+							"10.1.20.225"
+						]
+					}]
+                },
+                "fwSecurityLogProfile": {
+                    "class": "Security_Log_Profile",
+                    "network": {
+                        "publisher": {
+                            "use": "fwLogPublisher"
+                        },
+                        "storageFormat": {
+                            "fields": [
+                                "action",
+                                "dest-ip",
+                                "dest-port",
+                                "src-ip",
+                                "src-port"
+                            ]
+                        },
+                        "logTranslationFields": true,
+                        "logTcpEvents": true,
+                        "logRuleMatchRejects": true,
+                        "logTcpErrors": true,
+                        "logIpErrors": true,
+                        "logRuleMatchDrops": true,
+                        "logRuleMatchAccepts": true
+                    }
+                },
+                "fwLogDestinationSyslog": {
+                    "class": "Log_Destination",
+                    "type": "splunk",
+                    "forwardTo": {
+                        "use": "fwLogDestinationHsl"
+                    }
+                },
+                "fwLogDestinationHsl": {
+                    "class": "Log_Destination",
+                    "type": "remote-high-speed-log",
+                    "protocol": "tcp",
+                    "pool": {
+                        "use": "hsl_pool"
+                    }
+                },
+                "hsl_pool": {
+                    "class": "Pool",
+                    "members": [
+                        {
+                            "serverAddresses": [
+                                "10.1.20.12"
+                            ],
+                            "enable": true,
+                            "servicePort": 8018
+                        }
+                    ],
+                    "monitors": [
+                        {
+                            "bigip": "/Common/tcp"
+                        }
+                    ]
+                },
+                "fwLogPublisher": {
+                    "class": "Log_Publisher",
+                    "destinations": [
+                        {
+                            "use": "fwLogDestinationSyslog"
+                        }
+                    ]
+                },
+				"Juice_Shop_App_Firewall_Policy": {
+					"rules": [{
+						"use": "Juice_Shop_App_Firewall_Rule_List"
+					}],
+					"class": "Firewall_Policy"
+				},
+				"Juice_Shop_App_Firewall_Allowed_Address_List": {
+					"class": "Firewall_Address_List",
+					"addresses": [
+						"10.0.0.0/8",
+						"172.20.0.0/16",
+						"192.168.0.0/16"
+					]
+				},
+				"Juice_Shop_App_Firewall_Rule_List": {
+					"class": "Firewall_Rule_List",
+					"rules": [{
+							"loggingEnabled": true,
+							"protocol": "tcp",
+							"name": "tcpAllow",
+							"destination": {
+								"portLists": [{
+									"use": "Juice_Shop_App_Firewall_Allowed_Port_List"
+								}]
+							},
+							"source": {
+								"addressLists": [{
+									"use": "Juice_Shop_App_Firewall_Allowed_Address_List"
+								}]
+							},
+							"action": "accept"
+						},
+						{
+							"action": "drop",
+							"protocol": "any",
+							"loggingEnabled": true,
+							"name": "defaultDeny",
+							"source": {
+								"addressLists": [{
+									"use": "fwDefaultDenyAddressList"
+								}]
+							}
+						}
+					]
+				},
+				"Juice_Shop_App_Firewall_Allowed_Port_List": {
+					"class": "Firewall_Port_List",
+					"ports": [
+                        22,
+                        80,
+						443
+					]
+				},
+				"fwDefaultDenyAddressList": {
+					"class": "Firewall_Address_List",
+					"addresses": [
+						"0.0.0.0/0"
+					]
+                },
+                "secLogRemote": {
+                    "class": "Security_Log_Profile",
+                    "application": {
+                        "facility": "local0",
+                        "storageFilter": {
+                            "requestType": "all",
+                            "responseCodes": [
+                                "404",
+                                "201"
+                            ],
+                            "protocols": [
+                                "https"
+                            ],
+                            "httpMethods": [
+                                "PATCH",
+                                "DELETE"
+                            ],
+                            "requestContains": {
+                                "searchIn": "search-in-request",
+                                "value": "The new value"
+                            },
+                            "loginResults": [
+                                "login-result-unknown"
+                            ]
+                        },
+                        "storageFormat": "unit_hostname=\"%unit_hostname%\",management_ip_address=\"%management_ip_address%\",http_class_name=\"%http_class_name%\",web_application_name=\"%http_class_name%\",policy_name=\"%policy_name%\",policy_apply_date=\"%policy_apply_date%\",violations=\"%violations%\",support_id=\"%support_id%\",request_status=\"%request_status%\",response_code=\"%response_code%\",ip_client=\"%ip_client%\",route_domain=\"%route_domain%\",method=\"%method%\",protocol=\"%protocol%\",query_string=\"%query_string%\",x_forwarded_for_header_value=\"%x_forwarded_for_header_value%\",sig_ids=\"%sig_ids%\",sig_names=\"%sig_names%\",date_time=\"%date_time%\",severity=\"%severity%\",attack_type=\"%attack_type%\",geo_location=\"%geo_location%\",ip_address_intelligence=\"%ip_address_intelligence%\",username=\"%username%\",session_id=\"%session_id%\",src_port=\"%src_port%\",dest_port=\"%dest_port%\",dest_ip=\"%dest_ip%\",sub_violations=\"%sub_violations%\",virus_name=\"%virus_name%\",uri=\"%uri%\",request=\"%request%\",violation_details=\"%violation_details%\",header=\"%headers%\",response=\"%response%",
+                        "localStorage": false,
+                        "maxEntryLength": "64k",
+                        "protocol": "tcp",
+                        "remoteStorage": "remote",
+                        "reportAnomaliesEnabled": true,
+                        "servers": [
+                            {
+                                "address": "10.1.20.12",
+                                "port": "8514"
+                            }
+                        ]
+                    }
+                }
+			}
+			}
+		}
+	}
